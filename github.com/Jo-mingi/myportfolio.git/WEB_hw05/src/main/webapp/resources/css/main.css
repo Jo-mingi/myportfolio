@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+@media (min-width: 768px) {
+
+}
+body {
+	background-color: white;
+	color: black;
+	font-weight: bold;
+}
+a {
+	color: black;
+	font-weight: bold;
+	font-weight: bold;
+	font-size: 1.2em;
+}
+div {
+	display: block;
+}
+.cover-container {
+    max-width: 62em;
+}
+.nav {
+	display: flex;
+}
+.masthead {
+
+}
+.nav-masthead {
+	float: right;
+}
+.masthead-brand {
+	float: left;
+}
+
+
+
+
+
