@@ -5,14 +5,14 @@
 
 <%@ include file="../inc/header.jsp" %>
 
-<h2>테스트 </h2>
+<h2>검색</h2>
 
 <div>
 	<form action="search.do" method="get" id="moveForm">
-		<input type="hidden" name="pageNo" value="${pageNo}"/>
-		<input type="hidden" name="keyWord" value="${vo.getKeyWord()}"/>
-		<input type="hidden" name="searchType" value="${vo.getSearchType()}"/>
-		<input type="hidden" name="totalPages" value="${totalPages}"/>
+		<input type="hidden" name="viewPage" value="${viewPage}"/>
+		<input type="hidden" name="keyWord" value="${vo.keyWord}"/>
+		<input type="hidden" name="searchType" value="${vo.searchType}"/>
+		<input type="hidden" name="totalCnt" value="${totalCnt}"/>
 	</form>
 	
 	<form id="searchForm" action="search.do" method="post">
@@ -28,14 +28,14 @@
 				  	<option value="Q"
 				  		<c:out value="${vo.searchType eq 'Q' ? 'selected':''}"/>>효능</option>
 				</select>
-				<input type="text" class="form-control col-md-6" id="keyWord" name="keyWord" placeholder="Search" style="border-radius:4px 0 0 4px" value="${vo.getKeyWord()}"/>
+				<input type="text" class="form-control col-md-6" id="keyWord" name="keyWord" placeholder="Search" style="border-radius:4px 0 0 4px" value="${vo.keyWord}"/>
 				<button id="searchBtn" class="btn btn-info px-0" style="width:40px; border-radius:0 4px 4px 0"><i class="fas fa-search"></i></button>
 			</div>
 		</div>
 	</form>
 	
 	<table class="table">
-	<div class="d-flex justify-content-start">Total : ${totalCount}</div>
+	<div class="d-flex justify-content-start">Total : ${totalCnt}</div>
 	
 		<thead class="thead-light">
 			<tr>
@@ -47,19 +47,19 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:set var="bidCnt" value="${intNumOfRows}"></c:set>
-			<c:forEach var="list" items="${medicineVOs}">
+			<%-- <c:set var="bidCnt" value="${intNumOfRows}"></c:set> --%>
+			<c:forEach var="mList" items="${list}">
 			<tr>
-				<td><c:out value="${bidCnt}"/></td>
-				<td>${list.getEntpName()}</td>
-				<td>${list.getItemName()}</td>
+				<td>${mList.num}</td>
+				<td>${mList.entpName}</td>
+				<td>${mList.itemName}</td>
 				<%-- <td><a class="goView" href="<c:out value='${list.bid}'/>">${list.getItemName()}</a></td> --%>
-				<td>${list.getEfcyQesitm()}</td>
-				<c:if test="${list.getItemImage()!=null && list.getItemImage()!=''}">
-					<td><img alt="이미지 없음" src="${list.getItemImage()}" style="height: 70px; width: 130px;"></td>
+				<td>${mList.efcyQesitm}</td>
+				<c:if test="${mList.itemImage!=null && mList.itemImage!=''}">
+					<td><img alt="이미지 없음" src="${mList.itemImage}" style="height: 70px; width: 130px;"></td>
 				</c:if>
 			</tr>
-			<c:set var="bidCnt" value="${bidCnt-1}"/>
+			<%-- <c:set var="bidCnt" value="${bidCnt-1}"/> --%>
 			</c:forEach>
 		</tbody>
 	</table>
@@ -71,13 +71,13 @@
 			<a class="page-link" href="${prevPage}">이전</a>
 		</li>
 	    
-	    <c:forEach var="i" begin="${blockStartPage}" end="${blockEndPage}">
-			<li class="page-item ${pageNo == i ? 'active':''}">
+	    <c:forEach var="i" begin="${blockStart}" end="${blockEnd}">
+			<li class="page-item ${viewPage == i ? 'active':''}">
 				<a class="page-link" href="${i}">${i}</a>
 			</li>
 	    </c:forEach>
 
-	    <li class="page-item ${blockEndPage >= totalPage ? 'disabled':''}">
+	    <li class="page-item ${blockEnd >= totalPages ? 'disabled':''}">
 	      <a class="page-link" href="${nextPage}">다음</a>
 	    </li>
 
@@ -94,7 +94,7 @@
 		$(".page-item a").on("click", function(e){
 			e.preventDefault(); /* a 태그를 눌렀을 때 기본적으로 넘어가는 것을 막아주는 코드 */
 			
-			moveForm.find("input[name='pageNo']").val($(this).attr("href"));
+			moveForm.find("input[name='viewPage']").val($(this).attr("href"));
 			moveForm.submit();
 		});
 		

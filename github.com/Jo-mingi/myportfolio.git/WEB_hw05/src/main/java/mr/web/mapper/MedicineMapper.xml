@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mr.web.mapper.MedicineMapper">
+    
+    <!-- 
+    	${}는 파라미터값이 그대로 입력
+    	#{} ''감싸져서 입력
+    	버전마다 달라서 확인해봐야 함
+     -->
+	<sql id="criteria">
+	    <if test="searchType=='I'.toString()">
+        	where itemName like '%${keyWord}%'
+        </if>
+        <if test="searchType=='E'.toString()">            
+        	where entpName like '%${keyWord}%'
+        </if>
+        <if test="searchType=='Q'.toString()">            
+        	where efcyQesitm like '%${keyWord}%'
+        </if>
+	</sql>
+	
+    <select id="getList" resultType="MedicineVO">
+        select * from medicine
+        <include refid="criteria"></include>
+        order by num desc limit #{startIndex}, #{cntPerPages}
+    </select>
+    
+    <select id="selectTotalCnt" resultType="Integer">
+        select count(*) total from medicine
+        <include refid="criteria"></include>
+    </select>
+    
+    <insert id="register" parameterType="MedicineVO">
+        insert into medicine(entpName, itemName, itemSeq, efcyQesitm, useMethodQesitm, atpnWarnQesitm, atpnQesitm, intrcQesitm, seQesitm, depositMethodQesitm, openDe, updateDe, itemImage)
+        values(#{entpName}, #{itemName}, #{itemSeq}, #{efcyQesitm}, #{useMethodQesitm}, #{atpnWarnQesitm}, #{atpnQesitm}, #{intrcQesitm}, #{seQesitm}, #{depositMethodQesitm}, #{openDe}, #{updateDe}, #{itemImage})
+    </insert>
+    
+    <select id="view" parameterType="Integer" resultType="MedicineVO">
+        select * from medicine where num=#{num}
+    </select>
+    
+    <!-- <select id="read" parameterType="Integer" resultType="MedicineVO">
+        select * from medicine where bid=#{bid}
+    </select> -->
+    
+</mapper>

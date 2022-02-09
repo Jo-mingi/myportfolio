@@ -7,7 +7,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.*;
 
@@ -17,7 +17,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class ApiExplorer {
-    public static void main(String[] args) throws IOException {
+	
+    public static void main(String[] args, MedicineVO vo) throws IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=wILAtvV9ZsrSSMvJfpgApYwaywmj6N7juXb1Ka5q0G6wOHVa3IN9fn2sb6ubEAQNuqvQzAoNShdxtqiOCUWT7A%3D%3D"); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
@@ -64,29 +65,24 @@ public class ApiExplorer {
         	MedicineVO MedicineVO = gson.fromJson(arrayData.get(i), MedicineVO.class);
         	medicineVOs.add(MedicineVO);
         }
-        
-        for(int i=0; i< arrayData.size(); i++) {
-        	medicineVOs.get(i).getEntpName();
-        	medicineVOs.get(i).getItemName();
-        	medicineVOs.get(i).getItemSeq();
-        	medicineVOs.get(i).getEfcyQesitm();
-        	medicineVOs.get(i).getUseMethodQesitm();
-        	medicineVOs.get(i).getAtpnWarnQesitm();
-        	medicineVOs.get(i).getAtpnQesitm();
-        	medicineVOs.get(i).getIntrcQesitm();
-        	medicineVOs.get(i).getSeQesitm();
-        	medicineVOs.get(i).getDepositMethodQesitm();
-        	medicineVOs.get(i).getOpenDe();
-        	medicineVOs.get(i).getItemImage();
-        	
+
+        for(int i=0; i < arrayData.size(); i++) {
+        	System.out.println(medicineVOs.get(1).getEntpName());
+        	vo.setEntpName(medicineVOs.get(i).getEntpName());
+        	vo.setItemName(medicineVOs.get(i).getItemName());
+        	vo.setItemSeq(medicineVOs.get(i).getItemSeq());
+        	vo.setEfcyQesitm(medicineVOs.get(i).getEfcyQesitm());
+        	vo.setUseMethodQesitm(medicineVOs.get(i).getUseMethodQesitm());
+        	vo.setAtpnWarnQesitm(medicineVOs.get(i).getAtpnWarnQesitm());
+        	vo.setAtpnQesitm(medicineVOs.get(i).getAtpnQesitm());
+        	vo.setIntrcQesitm(medicineVOs.get(i).getIntrcQesitm());
+        	vo.setSeQesitm(medicineVOs.get(i).getSeQesitm());
+        	vo.setDepositMethodQesitm(medicineVOs.get(i).getDepositMethodQesitm());
+        	vo.setOpenDe(medicineVOs.get(i).getOpenDe());
+        	vo.setUpdateDe(medicineVOs.get(i).getUpdateDe());
+        	vo.setItemImage(medicineVOs.get(i).getItemImage());
+
         }
-        
-        
-        
-        
-        
-        
-        
         
 		
 		

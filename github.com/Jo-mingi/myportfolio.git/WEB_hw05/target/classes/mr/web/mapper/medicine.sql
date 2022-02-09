@@ -4,18 +4,19 @@ create table medicine(
 	itemName varchar(200) not null,
 	itemSeq int not null,
 	efcyQesitm varchar(500),
-	useMethodQesitm varchar(200),
-	atpnWarnQesitm varchar(500),
-	atpnQesitm varchar(1000),
-	intrcQesitm varchar(50),
-	seQesitm varchar(500),
+	useMethodQesitm varchar(1000),
+	atpnWarnQesitm varchar(1000),
+	atpnQesitm varchar(1500),
+	intrcQesitm varchar(1000),
+	seQesitm varchar(1000),
 	depositMethodQesitm varchar(200),
 	openDe varchar(50),
 	updateDe int,
-	itemImage varchar(200),
-	unique key(itemName, itemSeq)
+	itemImage varchar(200)
 );
 
 select * from medicine;
+
+drop table medicine;
 
 
