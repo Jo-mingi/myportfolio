@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -29,7 +30,7 @@ public class MedicineController {
 	@Autowired
 	private MedicineMapper medicineMapper;
 
-	@RequestMapping("/search.do")
+	@RequestMapping("/list.do")
 	public String test(Model model, MedicineVO vo) {
 		
 		// 전체 게시물 수
@@ -88,25 +89,30 @@ public class MedicineController {
 		return "board/search";
 	}
 	
+	@RequestMapping("/medicineInfo.do")
+	public String medicineInfo(@RequestParam("num") int num, int viewPage, int totalCnt, String searchType, String keyWord, Model model) {
+		
+		MedicineVO vo = medicineMapper.read(num);
+		
+		model.addAttribute("vo", vo);
+		model.addAttribute("viewPage", viewPage);
+		model.addAttribute("totalCnt", totalCnt);
+		model.addAttribute("keyWord", keyWord);
+		model.addAttribute("searchType", searchType);
+		
+		return "board/medicineDetails";
+	}
+	
 	@RequestMapping("/insert")
 	public String insert(MedicineVO vo) throws IOException {
+//		for(int i=1; i < 2; i++) {
 		for(int i=1; i < 46; i++) {
 			String PageNo = Integer.toString(i);
 			StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1471000/DrbEasyDrugInfoService/getDrbEasyDrugList"); /*URL*/
 	        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=wILAtvV9ZsrSSMvJfpgApYwaywmj6N7juXb1Ka5q0G6wOHVa3IN9fn2sb6ubEAQNuqvQzAoNShdxtqiOCUWT7A%3D%3D"); /*Service Key*/
 	        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(PageNo, "UTF-8")); /*페이지번호*/
+//	        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*한 페이지 결과 수*/
 	        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("100", "UTF-8")); /*한 페이지 결과 수*/
-	        
-	        urlBuilder.append("&" + URLEncoder.encode("entpName","UTF-8")); /*업체명*/
-	        urlBuilder.append("&" + URLEncoder.encode("itemName","UTF-8")); /*제품명*/
-	        urlBuilder.append("&" + URLEncoder.encode("itemSeq","UTF-8")); /*품목기준코드*/
-	        urlBuilder.append("&" + URLEncoder.encode("efcyQesitm","UTF-8")); /*이 약의 효능은 무엇입니까?*/
-	        urlBuilder.append("&" + URLEncoder.encode("useMethodQesitm","UTF-8")); /*이 약은 어떻게 사용합니까?*/
-	        urlBuilder.append("&" + URLEncoder.encode("atpnWarnQesitm","UTF-8")); /*이 약을 사용하기 전에 반드시 알아야 할 내용은 무엇입니까?*/
-	        urlBuilder.append("&" + URLEncoder.encode("atpnQesitm","UTF-8")); /*이 약의 사용상 주의사항은 무엇입니까?*/
-	        urlBuilder.append("&" + URLEncoder.encode("intrcQesitm","UTF-8")); /*이 약을 사용하는 동안 주의해야 할 약 또는 음식은 무엇입니까?*/
-	        urlBuilder.append("&" + URLEncoder.encode("seQesitm","UTF-8")); /*이 약은 어떤 이상반응이 나타날 수 있습니까?*/
-	        urlBuilder.append("&" + URLEncoder.encode("depositMethodQesitm","UTF-8")); /*이 약은 어떻게 보관해야 합니까?*/
 	        urlBuilder.append("&" + URLEncoder.encode("openDe","UTF-8")); /*공개일자*/
 	        urlBuilder.append("&" + URLEncoder.encode("updateDe","UTF-8")); /*수정일자*/
 	        urlBuilder.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*응답데이터 형식(xml/json) Default:xml*/
@@ -157,13 +163,77 @@ public class MedicineController {
 	        	vo.setEntpName(medicineVOs.get(j).getEntpName());
 	        	vo.setItemName(medicineVOs.get(j).getItemName());
 	        	vo.setItemSeq(medicineVOs.get(j).getItemSeq());
-	        	vo.setEfcyQesitm(medicineVOs.get(j).getEfcyQesitm());
-	        	vo.setUseMethodQesitm(medicineVOs.get(j).getUseMethodQesitm());
-	        	vo.setAtpnWarnQesitm(medicineVOs.get(j).getAtpnWarnQesitm());
-	        	vo.setAtpnQesitm(medicineVOs.get(j).getAtpnQesitm());
-	        	vo.setIntrcQesitm(medicineVOs.get(j).getIntrcQesitm());
-	        	vo.setSeQesitm(medicineVOs.get(j).getSeQesitm());
-	        	vo.setDepositMethodQesitm(medicineVOs.get(j).getDepositMethodQesitm());
+	        	// efcyQesitm(효능)
+	        	if(medicineVOs.get(j).getEfcyQesitm()!=null && medicineVOs.get(j).getEfcyQesitm()!="") {
+	        		if(medicineVOs.get(j).getEfcyQesitm().length()>7) {
+	        			vo.setEfcyQesitm(medicineVOs.get(j).getEfcyQesitm().substring(3, medicineVOs.get(j).getEfcyQesitm().length()-5).replaceAll("</p><p>", " "));
+	        		}else {
+	        			vo.setEfcyQesitm(medicineVOs.get(j).getEfcyQesitm());
+	        		}
+	        	}else {
+	        		vo.setEfcyQesitm(medicineVOs.get(j).getEfcyQesitm());	        		
+	        	}
+	        	// useMethodQesitm(사용법)
+	        	if(medicineVOs.get(j).getUseMethodQesitm()!=null && medicineVOs.get(j).getUseMethodQesitm()!="") {
+	        		if(medicineVOs.get(j).getUseMethodQesitm().length()>7) {
+	        			vo.setUseMethodQesitm(medicineVOs.get(j).getUseMethodQesitm().substring(3, medicineVOs.get(j).getUseMethodQesitm().length()-5).replaceAll("</p><p>", " "));       			        		
+	        		}else {	        			
+	        			vo.setUseMethodQesitm(medicineVOs.get(j).getUseMethodQesitm());	        			        		
+	        		}
+	        	}else {
+	        		vo.setUseMethodQesitm(medicineVOs.get(j).getUseMethodQesitm());	        			        		
+	        	}
+	        	// atpnWarnQesitm(주의사항경고)
+	        	if(medicineVOs.get(j).getAtpnWarnQesitm()!=null && medicineVOs.get(j).getAtpnWarnQesitm()!="") {
+	        		if(medicineVOs.get(j).getAtpnWarnQesitm().length()>7) {      		        			        		
+	        			vo.setAtpnWarnQesitm(medicineVOs.get(j).getAtpnWarnQesitm().substring(3, medicineVOs.get(j).getAtpnWarnQesitm().length()-5).replaceAll("</p><p>", " "));
+	        		}else {	        				        			        		
+	        			vo.setAtpnWarnQesitm(medicineVOs.get(j).getAtpnWarnQesitm());
+	        		}
+	        	}else {	        			        		
+	        		vo.setAtpnWarnQesitm(medicineVOs.get(j).getAtpnWarnQesitm());
+	        	}
+	        	// atpnQesitm(주의사항)
+	        	if(medicineVOs.get(j).getAtpnQesitm()!=null && medicineVOs.get(j).getAtpnQesitm()!="") {
+	        		if(medicineVOs.get(j).getAtpnQesitm().length()>7) {      		        			        		
+	        			
+	        		}else {	        				        			        		
+	        			vo.setAtpnQesitm(medicineVOs.get(j).getAtpnQesitm());
+	        		}
+	        	}else {	        			        		
+	        		vo.setAtpnQesitm(medicineVOs.get(j).getAtpnQesitm());
+	        	}
+	        	
+	        	// intrcQesitm(상호작용)
+	        	if(medicineVOs.get(j).getIntrcQesitm()!=null && medicineVOs.get(j).getIntrcQesitm()!="") {
+	        		if(medicineVOs.get(j).getIntrcQesitm().length()>7) {
+	        			vo.setIntrcQesitm(medicineVOs.get(j).getIntrcQesitm().substring(3, medicineVOs.get(j).getIntrcQesitm().length()-5).replaceAll("</p><p>", " "));
+	        		}else {
+	        			vo.setIntrcQesitm(medicineVOs.get(j).getIntrcQesitm());
+	        		}
+	        	}else {
+	        		vo.setIntrcQesitm(medicineVOs.get(j).getIntrcQesitm());
+	        	}
+	        	// seQesitm(부작용)
+	        	if(medicineVOs.get(j).getSeQesitm()!=null && medicineVOs.get(j).getSeQesitm()!="") {
+	        		if(medicineVOs.get(j).getSeQesitm().length()>7) {
+	        			vo.setSeQesitm(medicineVOs.get(j).getSeQesitm().substring(3, medicineVOs.get(j).getSeQesitm().length()-5).replaceAll("</p><p>", " "));
+	        		}else {
+	        			vo.setSeQesitm(medicineVOs.get(j).getSeQesitm());
+	        		}
+	        	}else {
+	        		vo.setSeQesitm(medicineVOs.get(j).getSeQesitm());
+	        	}
+	        	// depositMethodQesitm(보관법)
+	        	if(medicineVOs.get(j).getDepositMethodQesitm()!=null && medicineVOs.get(j).getDepositMethodQesitm()!="") {
+	        		if(medicineVOs.get(j).getDepositMethodQesitm().length()>7) {
+	        			vo.setDepositMethodQesitm(medicineVOs.get(j).getDepositMethodQesitm().substring(3, medicineVOs.get(j).getDepositMethodQesitm().length()-5).replaceAll("</p><p>", " "));
+	        		}else {
+	        			vo.setDepositMethodQesitm(medicineVOs.get(j).getDepositMethodQesitm());
+	        		}
+	        	}else {
+	        		vo.setDepositMethodQesitm(medicineVOs.get(j).getDepositMethodQesitm());
+	        	}
 	        	vo.setOpenDe(medicineVOs.get(j).getOpenDe());
 	        	vo.setUpdateDe(medicineVOs.get(j).getUpdateDe());
 	        	vo.setItemImage(medicineVOs.get(j).getItemImage());

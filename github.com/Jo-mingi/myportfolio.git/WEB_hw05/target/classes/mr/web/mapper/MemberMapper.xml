@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mr.web.mapper.MemberMapper">
+    
+    <!-- 
+    	${}는 파라미터값이 그대로 입력
+    	#{} ''감싸져서 입력
+    	버전마다 달라서 확인해봐야 함
+     -->
+	
+    <select id="getList" resultType="memberDTO">
+        select * from medicine_member
+    </select>
+
+    <insert id="registerMember" parameterType="memberDTO">
+        insert into medicine_member(id, pw, name, age, email, tel) values(
+	    														#{id},
+	    														#{pw},
+	    														#{name},
+	    														#{age},
+	    														#{email},
+	    														#{tel}
+	    														)
+    </insert>
+    
+    <select id="memberInfo" parameterType="Integer" resultType="memberDTO">
+	    select * from medicine_member where num=#{num}
+	</select>
+	
+    <delete id="memberDelete" parameterType="Integer">
+	    delete from medicine_member where num=#{num}
+	</delete>
+	
+    <update id="memberUpdate" parameterType="memberDTO">
+	    update medicine_member set age=#{age}, email=#{email}, tel=#{tel} where num=#{num}
+	</update>
+
+</mapper>

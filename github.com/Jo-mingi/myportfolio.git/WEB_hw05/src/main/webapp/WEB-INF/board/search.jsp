@@ -8,14 +8,14 @@
 <h2>검색</h2>
 
 <div>
-	<form action="search.do" method="get" id="moveForm">
+	<form action="list.do" method="get" id="moveForm">
 		<input type="hidden" name="viewPage" value="${viewPage}"/>
 		<input type="hidden" name="keyWord" value="${vo.keyWord}"/>
 		<input type="hidden" name="searchType" value="${vo.searchType}"/>
 		<input type="hidden" name="totalCnt" value="${totalCnt}"/>
 	</form>
 	
-	<form id="searchForm" action="search.do" method="post">
+	<form id="searchForm" action="list.do" method="post">
 		<div class="d-flex justify-content-end">
 			<div class="d-flex col-md-5 px-0 justify-content-end">
 				<select class="custom-select col-md-3" name="searchType">
@@ -52,12 +52,19 @@
 			<tr>
 				<td>${mList.num}</td>
 				<td>${mList.entpName}</td>
-				<td>${mList.itemName}</td>
-				<%-- <td><a class="goView" href="<c:out value='${list.bid}'/>">${list.getItemName()}</a></td> --%>
+				<td><a class="goView" href="<c:out value='${mList.num}'/>">${mList.itemName}</a></td>
 				<td>${mList.efcyQesitm}</td>
-				<c:if test="${mList.itemImage!=null && mList.itemImage!=''}">
+				<c:choose>
+					<c:when test="${mList.itemImage!=null && mList.itemImage!=''}">
+						<td><img alt="이미지 없음" src="${mList.itemImage}" style="height: 70px; width: 130px;"></td>
+					</c:when>
+					<c:otherwise>
+						<td></td>
+					</c:otherwise>
+				</c:choose>
+				<%-- <c:if test="${mList.itemImage!=null && mList.itemImage!=''}">
 					<td><img alt="이미지 없음" src="${mList.itemImage}" style="height: 70px; width: 130px;"></td>
-				</c:if>
+				</c:if> --%>
 			</tr>
 			<%-- <c:set var="bidCnt" value="${bidCnt-1}"/> --%>
 			</c:forEach>
@@ -110,6 +117,14 @@
 			
 			searchForm.submit();
 			
+		});
+		
+		$(".goView").on("click", function(e){
+			e.preventDefault();
+			
+			moveForm.append("<input type='hidden' name='num' value='" + $(this).attr("href")+"'/>");
+			moveForm.attr("action", "medicineInfo.do");
+			moveForm.submit();
 		});
 	});
 	

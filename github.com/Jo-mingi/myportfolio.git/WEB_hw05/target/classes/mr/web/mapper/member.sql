@@ -1,13 +1,12 @@
-create table first_board(
-	bid int not null auto_increment,
-	subject varchar(100) not null,
-	contents varchar(3000) not null,
-	hit int,
-	writer varchar(30) not null,
-	regDate datetime default now() not null,
-	primary key(bid)
+create table medicine_member(
+	num int primary key auto_increment,
+	id varchar(20) not null,
+	pw varchar(20) not null,
+	name varchar(20) not null,
+	age int not null,
+	email varchar(50) not null,
+	tel varchar(30) not null,
+	unique key(id)
 );
 
-insert into first_board(subject, contents, hit, writer) values('테스트 ~~~~', '테스트', 0, '운영자');
-
-select * from first_board;
+select * from medicine_member;

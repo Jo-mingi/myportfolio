@@ -39,8 +39,8 @@
         select * from medicine where num=#{num}
     </select>
     
-    <!-- <select id="read" parameterType="Integer" resultType="MedicineVO">
-        select * from medicine where bid=#{bid}
-    </select> -->
+    <select id="read" parameterType="Integer" resultType="MedicineVO">
+        select * from medicine where num=#{num}
+    </select>
     
 </mapper>
