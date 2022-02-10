@@ -115,7 +115,7 @@
 			</c:if>
 			<c:if test="${sessionScope.sessionUserId !=null && sessionScope.sessionUserId !=''}">
 				<div class="d-flex justify-content-end">
-					<div class="mr-1 align-self-center" style="color:white">${sessionScope.sessionUserName}님 환영합니다!!</div>
+					<div class="mr-1 align-self-center" style="color:black">${sessionScope.sessionUserName}님 환영합니다!!</div>
 					<button type="button" class="btn btn-secondary" onclick="logout()"><i class="fas fa-sign-out-alt fa-lg"></i></button>
 				</div>
 			</c:if>

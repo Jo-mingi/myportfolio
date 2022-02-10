@@ -8,7 +8,7 @@
 <h2>검색</h2>
 
 <div>
-	<form action="list.do" method="get" id="moveForm">
+	<form action="list.do" method="get" id="moveForm2">
 		<input type="hidden" name="viewPage" value="${viewPage}"/>
 		<input type="hidden" name="keyWord" value="${vo.keyWord}"/>
 		<input type="hidden" name="searchType" value="${vo.searchType}"/>
@@ -34,20 +34,19 @@
 		</div>
 	</form>
 	
-	<table class="table">
+	<table class="table col-12">
 	<div class="d-flex justify-content-start">Total : ${totalCnt}</div>
 	
 		<thead class="thead-light">
 			<tr>
-				<th>번호</th>
-				<th>업체명</th>
-				<th>제품명</th>
-				<th>효능</th>
-				<th>약</th>
+				<th class="col-1">번호</th>
+				<th class="col-2">업체명</th>
+				<th class="col-3">제품명</th>
+				<th class="col-5">효능</th>
+				<th class="col-1">약</th>
 			</tr>
 		</thead>
 		<tbody>
-			<%-- <c:set var="bidCnt" value="${intNumOfRows}"></c:set> --%>
 			<c:forEach var="mList" items="${list}">
 			<tr>
 				<td>${mList.num}</td>
@@ -62,16 +61,13 @@
 						<td></td>
 					</c:otherwise>
 				</c:choose>
-				<%-- <c:if test="${mList.itemImage!=null && mList.itemImage!=''}">
-					<td><img alt="이미지 없음" src="${mList.itemImage}" style="height: 70px; width: 130px;"></td>
-				</c:if> --%>
 			</tr>
-			<%-- <c:set var="bidCnt" value="${bidCnt-1}"/> --%>
+
 			</c:forEach>
 		</tbody>
 	</table>
 
-<!-- Page navigation -->
+	<!-- Page navigation -->
 	  <ul class="pagination justify-content-center">
 	  
 		<li class="page-item ${prevPage <= 0 ? 'disabled' : '' }">
@@ -85,7 +81,7 @@
 	    </c:forEach>
 
 	    <li class="page-item ${blockEnd >= totalPages ? 'disabled':''}">
-	      <a class="page-link" href="${nextPage}">다음</a>
+	    	<a class="page-link" href="${nextPage}">다음</a>
 	    </li>
 
 	  </ul>
@@ -95,14 +91,13 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
-		/* 페이징 */
-		var moveForm = $("#moveForm");
+		var moveForm2 = $("#moveForm2");
 		
 		$(".page-item a").on("click", function(e){
 			e.preventDefault(); /* a 태그를 눌렀을 때 기본적으로 넘어가는 것을 막아주는 코드 */
 			
-			moveForm.find("input[name='viewPage']").val($(this).attr("href"));
-			moveForm.submit();
+			moveForm2.find("input[name='viewPage']").val($(this).attr("href"));
+			moveForm2.submit();
 		});
 		
 		/* 검색 */
@@ -118,13 +113,14 @@
 			searchForm.submit();
 			
 		});
+
 		
 		$(".goView").on("click", function(e){
 			e.preventDefault();
 			
-			moveForm.append("<input type='hidden' name='num' value='" + $(this).attr("href")+"'/>");
-			moveForm.attr("action", "medicineInfo.do");
-			moveForm.submit();
+			moveForm2.append("<input type='hidden' name='num' value='" + $(this).attr("href")+"'/>");
+			moveForm2.attr("action", "medicineInfo.do");
+			moveForm2.submit();
 		});
 	});
 	

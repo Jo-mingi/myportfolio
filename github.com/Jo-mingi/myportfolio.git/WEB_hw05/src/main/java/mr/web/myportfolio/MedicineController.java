@@ -22,6 +22,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import mr.web.mapper.MedicineMapper;
+import mr.web.mapper.MemoMapper;
 import mr.web.model.MedicineVO;
 
 @Controller
@@ -29,6 +30,8 @@ public class MedicineController {
 	
 	@Autowired
 	private MedicineMapper medicineMapper;
+	@Autowired
+	private MemoMapper memoMapper;
 
 	@RequestMapping("/list.do")
 	public String test(Model model, MedicineVO vo) {
@@ -101,6 +104,24 @@ public class MedicineController {
 		model.addAttribute("searchType", searchType);
 		
 		return "board/medicineDetails";
+	}
+	
+	@RequestMapping("/memoInsert.do")
+	public String memoInsert(@RequestParam("id") String id, int num, int viewPage, int totalCnt, String searchType, String keyWord, Model model) {
+		
+		
+		
+		model.addAttribute("num", num);
+		model.addAttribute("viewPage", viewPage);
+		model.addAttribute("totalCnt", totalCnt);
+		model.addAttribute("keyWord", keyWord);
+		model.addAttribute("searchType", searchType);
+		
+//		mnum int primary key auto_increment,
+//		id varchar(20) not null,
+//		itemName varchar(1500) not null
+		
+		return "redirect:/board/medicineDetails";
 	}
 	
 	@RequestMapping("/insert")
@@ -244,7 +265,6 @@ public class MedicineController {
 	        }
 	        
 		}
-        
         
         return "board/search";
 	}

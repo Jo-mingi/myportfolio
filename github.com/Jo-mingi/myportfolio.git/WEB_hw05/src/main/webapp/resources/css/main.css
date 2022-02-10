@@ -3,12 +3,20 @@
 @media (min-width: 768px) {
 
 }
+@font-face {
+    font-family: 'ONE-Mobile-POP';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-POP.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 body {
+	font-family: 'ONE-Mobile-POP';
 	background-color: white;
 	color: black;
-	font-weight: bold;
+	font-weight: normal;
 }
 a{
+	font-family: 'ONE-Mobile-POP';
 	color: black;
 	font-weight: bold;
 	font-size: 1.2em;
@@ -56,6 +64,13 @@ tbody tr td a {
 	font-size: 1.0em;
 }
 
+.table {
+	border-bottom: 1px solid rgba(10, 10, 10, 0.1);
+}
+
+.table td {
+	vertical-align: middle;
+}
 
 
 

@@ -14,7 +14,6 @@ public interface MemberMapper {
 	public int memberDelete(int num);
 	public MemberDTO memberInfo(String id);
 	public int memberUpdate(MemberDTO dto);
-//	public int memberPasswordUpdate(MemberDTO dto);
 
 	@Select("select name from medicine_member where id=#{id} AND pw=#{pw}")
 	public String selectMemberName(MemberDTO dto);
