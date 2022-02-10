@@ -34,11 +34,34 @@
 		// c:url을 이용하면 ${ctx}를 생략할 수 있다. 
 		location.href="<c:url value='/memberLogout.do'/>";
 	}
+	$(document).ready(function(){
+		<c:if test="${!empty msg}">
+			alert("${msg}");
+			<c:remove var="msg" scope="session"/>
+		</c:if>
+		
+		var moveForm = $("#moveForm");
+		$("#goProfile").on("click", function(e){
+			e.preventDefault();
+			if(${sessionScope.sessionUserId==null || sessionScope.sessionUserId==''}) {
+				alert("로그인이 필요합니다!!");
+				return false;
+			}
+			moveForm.append("<input type='hidden' name='id' value='" + $(this).attr("href")+"'/>");
+			moveForm.attr("action", "memberInfo.do");
+			moveForm.submit();
+			
+		});
+		
+	});
 </script>
 <link rel="stylesheet" href="${ctx}/resources/css/main.css">
 
 </head>
 <body class="text-center">
+<form id="moveForm" method="post" action="<c:url value='/memberInfo.do'/>">
+	
+</form>
 <!-- Modal -->
 <div class="container">
 	<div class="modal fade show" id="LoginModal">
@@ -57,8 +80,8 @@
 		      </div>
 	      <!-- Modal footer -->
 		      <div class="modal-footer border-0 d-flex justify-content-center">
-		        <button type="submit" class="btn btn-primary" onclick="return checkValidation()">Sign in</button>
-		        <button type="button" class="btn btn-secondary" onclick="location.href='${ctx}/memberJoin.do'">Sign up</button>
+		        <button type="submit" class="btn btn-primary" onclick="return checkValidation()"><i class="fas fa-sign-in-alt fa-lg"></i></button>
+		        <button type="button" class="btn btn-secondary" onclick="location.href='${ctx}/memberJoin.do'"><i class="fas fa-user-plus fa-lg"></i></button>
 		      </div>
 	      </form>
 	    </div>
@@ -71,21 +94,29 @@
 		<div class="inner">
 			<h1 class="masthead-brand">Cover</h1>
 			<nav class="nav nav-masthead justify-content-center">
-				<a class="nav-link active" href="${ctx}">Home</a>
-				<a class="nav-link" href="${ctx}/list.do">Search</a>
-				<a class="nav-link" href="${ctx}">Contact</a>
+				<a class="nav-link active" href="${ctx}"><i class="fas fa-home fa-lg"></i></a>
+				<a class="nav-link" href="${ctx}/list.do"><i class="fas fa-search fa-lg"></i></a>
+				<div class="dropdown">
+					<button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="false">
+						<span><i class="fas fa-portrait fa-2x"></i></span>
+  					</button>
+  					<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+  					 	<a class="dropdown-item" id="goProfile" href="<c:out value='${sessionScope.sessionUserId}'/>">Profile</a>
+						<a class="dropdown-item" onclick="goRepository()">Repository</a>
+					</div>
+				</div>
 			</nav>
 		</div>
 		<div class="container" id="login">
 			<c:if test="${sessionScope.sessionUserId==null || sessionScope.sessionUserId==''}">
 				<div class="d-flex justify-content-end">
-					<button type="button" class="btn btn-light" data-toggle="modal" data-target="#LoginModal">Login</button>
+					<button type="button" class="btn btn-light" data-toggle="modal" data-target="#LoginModal"><i class="fas fa-sign-in-alt fa-lg"></i></button>
 				</div>
 			</c:if>
 			<c:if test="${sessionScope.sessionUserId !=null && sessionScope.sessionUserId !=''}">
 				<div class="d-flex justify-content-end">
 					<div class="mr-1 align-self-center" style="color:white">${sessionScope.sessionUserName}님 환영합니다!!</div>
-					<button type="button" class="btn btn-secondary" onclick="logout()">Logout</button>
+					<button type="button" class="btn btn-secondary" onclick="logout()"><i class="fas fa-sign-out-alt fa-lg"></i></button>
 				</div>
 			</c:if>
 		</div>

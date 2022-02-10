@@ -12,10 +12,11 @@ public interface MemberMapper {
 	public List<MemberDTO> getList();
 	public int registerMember(MemberDTO dto);
 	public int memberDelete(int num);
-	public MemberDTO memberInfo(int num);
+	public MemberDTO memberInfo(String id);
 	public int memberUpdate(MemberDTO dto);
+//	public int memberPasswordUpdate(MemberDTO dto);
 
-	@Select("select name from member3 where id=#{id} AND pw=#{pw}")
+	@Select("select name from medicine_member where id=#{id} AND pw=#{pw}")
 	public String selectMemberName(MemberDTO dto);
 
 	

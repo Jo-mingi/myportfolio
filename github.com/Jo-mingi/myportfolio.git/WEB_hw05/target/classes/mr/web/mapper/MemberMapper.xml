@@ -23,8 +23,8 @@
 	    														)
     </insert>
     
-    <select id="memberInfo" parameterType="Integer" resultType="memberDTO">
-	    select * from medicine_member where num=#{num}
+    <select id="memberInfo" parameterType="String" resultType="memberDTO">
+	    select * from medicine_member where id=#{id}
 	</select>
 	
     <delete id="memberDelete" parameterType="Integer">
@@ -34,5 +34,9 @@
     <update id="memberUpdate" parameterType="memberDTO">
 	    update medicine_member set age=#{age}, email=#{email}, tel=#{tel} where num=#{num}
 	</update>
+	
+    <!-- <update id="memberPasswordUpdate" parameterType="memberDTO">
+	    update medicine_member set pw=#{pw} where num=#{num}
+	</update> -->
 
 </mapper>

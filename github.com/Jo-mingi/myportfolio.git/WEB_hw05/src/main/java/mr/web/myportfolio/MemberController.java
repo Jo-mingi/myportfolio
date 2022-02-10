@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import mr.web.mapper.MemberMapper;
 import mr.web.model.MemberDTO;
@@ -17,9 +18,9 @@ public class MemberController {
 	private MemberMapper memberMapper;
 	
 	@RequestMapping("/memberInfo.do")
-	public String memberInfo(int num, Model model) {
+	public String memberInfo(String id, Model model) {
 		
-		MemberDTO dto = memberMapper.memberInfo(num);
+		MemberDTO dto = memberMapper.memberInfo(id);
 		
 		model.addAttribute("dto", dto);
 		
@@ -37,13 +38,13 @@ public class MemberController {
 	@RequestMapping("/memberLogin.do")
 	public String memberlogin(MemberDTO dto, HttpSession session) {
 		String userName = memberMapper.selectMemberName(dto);
-		
 		if(userName !=null && !"".contentEquals(userName)) {
 			session.setAttribute("sessionUserId", dto.getId());
 			session.setAttribute("sessionUserName", userName);
 		}else {
 			session.setAttribute("sessionUserId", "");
 			session.setAttribute("sessionUserName", "");
+			session.setAttribute("msg", "존재하지 않는 사용자입니다.");
 		}
 		
 		return "redirect:/";
@@ -60,6 +61,22 @@ public class MemberController {
 	public String memberJoin() {
 		
 		return "member/join";
+	}
+	
+	@RequestMapping("/memberDelete.do")
+	public String memberDelete(@RequestParam("num") int num) {
+		
+		int cnt = memberMapper.memberDelete(num);
+		
+		return "redirect:/";
+	}
+	
+	@RequestMapping("/memberUpdate.do")
+	public String memberUpdate(MemberDTO dto) {
+		
+		int cnt = memberMapper.memberUpdate(dto);
+		
+		return "redirect:/";
 	}
 	
 }

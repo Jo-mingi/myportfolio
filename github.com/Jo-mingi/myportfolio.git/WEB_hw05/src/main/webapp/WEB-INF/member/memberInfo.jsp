@@ -1,22 +1,10 @@
-<%@page import="mr.web.model.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<%@include file="../inc/header.jsp" %>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<meta name='viewport' content='width=device-width, initial-scale=1'>
-<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>
-<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js'></script>
-<script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js'></script>
-</head>
-<body>
+
+<%@ include file="../inc/header.jsp" %>
+
 	<div class="container">
 		<form class="form-inline" action="${ctx}/memberUpdate.do" method="post">
 		<input type="hidden" name="num" value="${dto.num}"/>
@@ -35,7 +23,7 @@
 				</tr>
 				<tr>
 					<td>비밀번호</td>
-					<td>${dto.pw}</td>
+					<td><input type="password" name="pw" value="${dto.pw}" disabled/></td>
 				</tr>
 				<tr>
 					<td>이름</td>
@@ -55,16 +43,14 @@
 				</tr>
 			</c:if>
 				<tr>
-					<td colspan="2" class="text-center">
-						<input type="submit" value="수정하기" class="btn btn-primary mr-2"/>
-						<input type="reset" value="취소" class="btn btn-info mr-2"/>
-						<input type="button" value="리스트" class="btn btn-secondary" onclick="location.href='${ctx}/memberList.do'"/>
+					<td colspan="3" class="text-center">
+						<input type="submit" value="modify" class="btn btn-primary mr-2"/>
+						<input type="reset" value="reset" class="btn btn-info mr-2"/>
+						<input type="button" value="delete" class="btn btn-danger" onclick="location.href='${ctx}/memberDelete.do?num=${dto.num}'"/>
 					</td>
 				</tr>
 			</table>
 		</form>
 	</div>
 
-
-</body>
-</html>
+<%@ include file="../inc/footer.jsp" %>
