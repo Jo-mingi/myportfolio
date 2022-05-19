@@ -24,6 +24,7 @@ import com.google.gson.JsonParser;
 import mr.web.mapper.MedicineMapper;
 import mr.web.mapper.MemoMapper;
 import mr.web.model.MedicineVO;
+import mr.web.model.MemoVO;
 
 @Controller
 public class MedicineController {
@@ -34,7 +35,7 @@ public class MedicineController {
 	private MemoMapper memoMapper;
 
 	@RequestMapping("/list.do")
-	public String test(Model model, MedicineVO vo) {
+	public String list(Model model, MedicineVO vo) {
 		
 		// 전체 게시물 수
 		int totalCnt = medicineMapper.selectTotalCnt(vo);
@@ -107,19 +108,19 @@ public class MedicineController {
 	}
 	
 	@RequestMapping("/memoInsert.do")
-	public String memoInsert(@RequestParam("id") String id, int num, int viewPage, int totalCnt, String searchType, String keyWord, Model model) {
+	public String memoInsert(String id, String itemName, String memo, int num, int viewPage, int totalCnt, String searchType, String keyWord, MemoVO mvo, Model model) {
 		
+		mvo.setId(id);
+		mvo.setItemName(itemName);
+		mvo.setMemo(memo);
 		
+		int cnt = memoMapper.memoRegister(mvo);
 		
 		model.addAttribute("num", num);
 		model.addAttribute("viewPage", viewPage);
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("keyWord", keyWord);
 		model.addAttribute("searchType", searchType);
-		
-//		mnum int primary key auto_increment,
-//		id varchar(20) not null,
-//		itemName varchar(1500) not null
 		
 		return "redirect:/board/medicineDetails";
 	}
@@ -259,7 +260,7 @@ public class MedicineController {
 	        	vo.setUpdateDe(medicineVOs.get(j).getUpdateDe());
 	        	vo.setItemImage(medicineVOs.get(j).getItemImage());
 	        	
-	        	medicineMapper.register(vo);
+	        	int cnt = medicineMapper.register(vo);
 	        	vo = new MedicineVO();
 	        	
 	        }

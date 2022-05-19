@@ -15,15 +15,20 @@
 	        <button type="button" class="close" data-dismiss="modal">&times;</button> <!-- X 버튼 -->
 	      </div>
 	      <!-- Modal body -->
-	      <form action="${ctx}/memoInsert.do">
+	      <form action="memoInsert.do" method="post">
+	      		<input type="hidden" name="viewPage" value="${viewPage}"/>
+				<input type="hidden" name="keyWord" value="${keyWord}"/>
+				<input type="hidden" name="searchType" value="${searchType}"/>
+				<input type="hidden" name="totalCnt" value="${totalCnt}"/>
 		      	<input type="hidden" name="id" value="${sessionScope.sessionUserId}"/>
-		      	<input type="hidden" name="memo" value="#meno"/>
+		      	<input type="hidden" name="num" value="${vo.num}"/>
 		      <div class="modal-body px-5 pt-0">
 		      	<input type="text" name="itemName" value="${vo.itemName}" disabled/>
-		      	<textarea class="form-control mt-3" id="meno" name="meno" rows="20"></textarea>
+		      	<input class="form-control" type="text" name="name"/>
 		      </div>
 	      <!-- Modal footer -->
 		      <div class="modal-footer border-0 d-flex justify-content-center">
+		      	<input class="form-control" type="submit" name="submit"/>
 		        <button type="submit" class="btn btn-primary pt-2"><i class="far fa-save fa-lg"></i></button>
 		        <button type="reset" class="btn btn-secondary pt-2"><i class="fas fa-eraser fa-lg"></i></button>
 		      </div>

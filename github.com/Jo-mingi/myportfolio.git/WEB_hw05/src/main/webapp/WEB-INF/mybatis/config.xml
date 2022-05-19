@@ -6,5 +6,6 @@
   <typeAliases>
       <typeAlias type="mr.web.model.MedicineVO" alias="medicineVO"/>
       <typeAlias type="mr.web.model.MemberDTO" alias="memberDTO"/>
+      <typeAlias type="mr.web.model.MemoVO" alias="memoVO"/>
   </typeAliases>
 </configuration>
