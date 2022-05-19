@@ -14,5 +14,4 @@ public interface MedicineMapper {
 	public MedicineVO view(int num, String mode); // 게시글 보기
 //
 	public int selectTotalCnt(MedicineVO vo); // 전체 게시물 개수
-	
 }
